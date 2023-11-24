@@ -177,15 +177,15 @@ open class PanModalPresentationController: UIPresentationController {
         guard let containerView = containerView
             else { return }
 
+       // Fix: PanModal issue on iOS 17.1+
+       // https://github.com/slackhq/PanModal/issues/202
+       if self.panContainerView.frame == .zero {
+           self.adjustPresentedViewFrame()
+       }
+
         layoutBackgroundView(in: containerView)
         layoutPresentedView(in: containerView)
         configureScrollViewInsets()
-      
-      // Fix: PanModal issue on iOS 17.1+
-      // https://github.com/slackhq/PanModal/issues/202
-      if self.panContainerView.frame == .zero {
-        self.adjustPresentedViewFrame()
-      }
 
         guard let coordinator = presentedViewController.transitionCoordinator else {
             backgroundView.dimState = .max
